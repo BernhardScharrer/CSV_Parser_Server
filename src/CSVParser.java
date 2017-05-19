@@ -56,7 +56,6 @@ public class CSVParser extends GNetServer {
 			if (packet instanceof TableData) {
 				
 				Table table = (Table) packet.getEntry("TABLE");
-				String params = (String) packet.getEntry("PARAMS");
 				
 				for (User user : table.getUsers()) {
 					
@@ -67,6 +66,8 @@ public class CSVParser extends GNetServer {
 					
 					ResultSet result = Database.query("SELECT * FROM `USERS` WHERE `NACHNAME` = '"+nachname+"' AND `VORNAME` = '"+vorname+"'");
 					
+					int new_users=0, updated_users=0;
+					
 					try {
 						if (result.next()) {
 							
@@ -75,14 +76,26 @@ public class CSVParser extends GNetServer {
 							Database.execute("UPDATE `USERS` SET `TELEPHON`='"+telephon+"' WHERE ID = '"+id+"'");
 							Database.execute("UPDATE `DATA` SET FUNKTION`='"+funktion+"' WHERE `ID`='"+id+"'");
 							
+							updated_users++;
+							
 						} else {
 							
+							Database.execute("INSERT INTO `USERS`(`LIZENZ`, `VORNAME`, `NACHNAME`, `TELEPHON`) VALUES ('"+LicenseGenerator.generateLicense("USERS", "LIZENZ")+"','"+vorname+"','"+nachname+"','"+telephon+"')");
 							
+							ResultSet generated_row = Database.query("SELECT * FROM `USERS` WHERE `NACHNAME` = '"+nachname+"' AND `VORNAME` = '"+vorname+"'");
+							
+							int id = generated_row.getInt("ID");
+							
+							Database.execute("INSERT INTO `DATA`(`ID`, `FUNKTION`) VALUES ('"+id+"','"+funktion+"')");
+							
+							new_users++;
 							
 						}
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
+					
+					Console.info("Updated database succesfully! (NEW:" + new_users + "|UPDATED:" + updated_users + ")");
 					
 					
 				}
