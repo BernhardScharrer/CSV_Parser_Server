@@ -97,7 +97,6 @@ public class CSVParser extends GNetServer {
 					
 					Console.info("Updated database succesfully! (NEW:" + new_users + "|UPDATED:" + updated_users + ")");
 					
-					
 				}
 				
 			}
