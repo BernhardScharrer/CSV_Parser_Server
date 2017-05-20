@@ -74,7 +74,7 @@ public class CSVParser extends GNetServer {
 							int id = result.getInt("ID");
 							
 							Database.execute("UPDATE `USERS` SET `TELEPHON`='"+telephon+"' WHERE ID = '"+id+"'");
-							Database.execute("UPDATE `DATA` SET FUNKTION`='"+funktion+"' WHERE `ID`='"+id+"'");
+							Database.execute("UPDATE `DATA` SET `FUNKTION`='"+funktion+"' WHERE `ID`='"+id+"'");
 							
 							updated_users++;
 							
@@ -83,6 +83,8 @@ public class CSVParser extends GNetServer {
 							Database.execute("INSERT INTO `USERS`(`LIZENZ`, `VORNAME`, `NACHNAME`, `TELEPHON`) VALUES ('"+LicenseGenerator.generateLicense("USERS", "LIZENZ")+"','"+vorname+"','"+nachname+"','"+telephon+"')");
 							
 							ResultSet generated_row = Database.query("SELECT * FROM `USERS` WHERE `NACHNAME` = '"+nachname+"' AND `VORNAME` = '"+vorname+"'");
+							
+							generated_row.next();
 							
 							int id = generated_row.getInt("ID");
 							
