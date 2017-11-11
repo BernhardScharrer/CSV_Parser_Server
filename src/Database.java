@@ -26,7 +26,7 @@ public class Database {
 		 * 
 		 */
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream("../data/sql.dat"), "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream("sql.dat"), "UTF-8"));
 			
 			while ((line=reader.readLine())!=null) {
 				if(line.startsWith("name")) {
